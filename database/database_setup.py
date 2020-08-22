@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 import psycopg2
 
-# os.environ['WORKER_DATABASE_URL'] = 'postgres+psycopg2://postgres:root@localhost:5432/pyvinci'
+
 DATABASE_URL = os.getenv('WORKER_DATABASE_URL')
 Base = declarative_base()
 
@@ -15,10 +15,6 @@ class UserRecord(Base):
     __tablename__ = 'user_record'
     
     id = Column(Integer, primary_key=True)
-    # username = Column(String, nullable=False)
-    # password = Column(String, nullable=False)
-    # created_at = Column(TIMESTAMP, nullable=False)
-    # updated_at = Column(TIMESTAMP, nullable=False)
 
 
 class Project(Base):
@@ -76,7 +72,6 @@ class Jobs(Base):
                                                                                                     self.updated_at)
 
 
-# engine = create_engine('postgres+psycopg2://postgres:root@localhost:5432/pyvinci')
 engine = create_engine(DATABASE_URL)
 
 Base.metadata.create_all(engine)
