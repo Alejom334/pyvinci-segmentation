@@ -6,7 +6,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 import psycopg2
 
-
+# os.environ['WORKER_DATABASE_URL'] = 'postgres+psycopg2://postgres:root@localhost:5432/pyvinci'
+DATABASE_URL = os.getenv('WORKER_DATABASE_URL')
 Base = declarative_base()
 
 
@@ -50,7 +51,7 @@ class Image(Base):
     updated_at = Column(TIMESTAMP, nullable=False)
 
     def __repr__(self):
-        return '<image id={0}\n -> url={1}\n -> url={2}\n -> created_at={3}; updated_at={4}>'.format(self.id,
+        return '<image id={0}\n -> project_id={1}\n -> url={2}\n -> created_at={3}; updated_at={4}>'.format(self.id,
                                                                                                     self.project_id,
                                                                                                     self.url,
                                                                                                     self.created_at,
@@ -68,14 +69,15 @@ class Jobs(Base):
     updated_at = Column(TIMESTAMP, nullable=False)
 
     def __repr__(self):
-        return '<job id={0}\n -> project_id={1}\n -> status={2}\n created_at={3}; updated_at={4}>'.format(self.id,
-                                                                                                        self.project_id,
-                                                                                                        self.status,
-                                                                                                        self.created_at,
-                                                                                                        self.updated_at)
+        return '<job id={0}\n -> project_id={1}\n -> status={2}\n -> created_at={3}; updated_at={4}>'.format(self.id,
+                                                                                                    self.project_id,
+                                                                                                    self.status,
+                                                                                                    self.created_at,
+                                                                                                    self.updated_at)
 
-# TODO: Set comms string to an environment variable
-engine = create_engine('postgres+psycopg2://postgres:root@localhost:5432/pyvinci')
+
+# engine = create_engine('postgres+psycopg2://postgres:root@localhost:5432/pyvinci')
+engine = create_engine(DATABASE_URL)
 
 Base.metadata.create_all(engine)
 

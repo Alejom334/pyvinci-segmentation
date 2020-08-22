@@ -82,7 +82,7 @@ class SegmentationModel():
                 # print(thing_classes[maskClassID[i]])
                 maskLabels.append(self.thing_classes[maskClassIDs[i]])
             print("rendered InstanceSeg")
-            return (masks, maskLabels)
+            return (maskLabels, masks)
         return masks
 
 
