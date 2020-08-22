@@ -108,13 +108,13 @@ def worker():
 
 
 if __name__ == "__main__":
-    # while True:
-    #     worker()
-    #     default_interval = 120
-    #     print('Starting to wait...')
-    #     if SEGMENTATION_INTERVAL != None:
-    #         default_interval = SEGMENTATION_INTERVAL
-    #     time.sleep(default_interval)
-    database_delete(2)
+    while True:
+        worker()
+        default_interval = 120
+        print('Starting to wait...')
+        if SEGMENTATION_INTERVAL != None:
+            default_interval = SEGMENTATION_INTERVAL
+        time.sleep(default_interval)
+    # database_delete(2)
 
 
