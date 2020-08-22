@@ -1,31 +1,20 @@
 #SEGMENTATION MODEL
+from model import segmentation
+from model.segmentation import SegmentationModel
+from model.segmentation import ImagePreProcessing
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database.database_setup import Base, Jobs
+from database.database_setup import Base, Jobs, Image
 import datetime
 import pickle
 import time
 
-engine = create_engine('postgres+psycopg2://postgres:root@localhost:5433/pyvinci')
+# TODO: Set comms string to an environment variable
+engine = create_engine('postgres+psycopg2://postgres:root@localhost:5432/pyvinci')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-
-def database_insert():
-    newJobs = list()
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/bikes.jpeg')
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/beach.jpeg')
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/buildings.JPG')
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/dog.jpeg')
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/snow_statue.JPG')
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/trees_buildings.JPG')
-    newJobs.append('https://storage.googleapis.com/segmentation-testing/testing_images1/bike.jpeg')
-    for imageURL in newJobs:
-        job_new = Jobs(image_url=imageURL, status="PENDING", created_at=datetime.datetime.now(), updated_at=datetime.datetime.now())
-        session.add(job_new)
-        session.commit()
-        print('New job added: {}'.format(job_new))
 
 
 def database_delete():
@@ -44,12 +33,13 @@ def database_read():
         imageURLs.append(image_url)
     return (jobIDs, imageURLs)
 
+
 def database_update(job_id, image_url, labels_things_pred, labels_stuff_pred, masks_labels_pred, masks_nparr_pred):
     job_completed = session.query(Jobs).filter_by(id=job_id).first()
     job_completed.labels_things = labels_things_pred
     job_completed.labels_stuff = labels_stuff_pred
-    job_completed.mask_labels = masks_labels_pred
-    job_completed.masks_nparr = pickle.dumps(masks_nparr_pred)
+    job_completed.masks_labels = masks_labels_pred
+    job_completed.masks = pickle.dumps(masks_nparr_pred)
     job_completed.status = 'COMPLETE'
     job_completed.updated_at = datetime.datetime.now()
     session.add(job_completed)
@@ -77,11 +67,11 @@ def worker():
 
 
 if __name__ == "__main__":
-    while True:
-        #worker()
-        print('Starting to wait')
-        time.sleep(7)
-        #main()
-        #TESTING
-        #database_insert()
-        #database_delete()
+    # while True:
+    #     worker()
+    #     print('Starting to wait')
+    #     time.sleep(7)
+    pass
+    # TODO: erase below after done testing
+    worker()
+    # database_delete()
