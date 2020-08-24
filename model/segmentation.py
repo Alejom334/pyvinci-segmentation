@@ -1,3 +1,4 @@
+import cv2
 import torch, torchvision
 print("Torch Version:", torch.__version__)
 print("CUDA available:", torch.cuda.is_available())
@@ -13,7 +14,6 @@ from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, DatasetCatalog
 # import common libraries
 import os, json, random
-import cv2
 import numpy as np
 import requests
 from requests.exceptions import HTTPError, Timeout
