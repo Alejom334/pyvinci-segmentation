@@ -1,5 +1,5 @@
 Pyvinci Segmentation:
 
-- CronJob
+- model
 - Database
 - DockerFile
